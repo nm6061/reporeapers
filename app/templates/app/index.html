@@ -1,36 +1,74 @@
 {% extends "app/layout.html" %}
+{% load humanize %}
 
 {% block content %}
 
-<div class="jumbotron">
-    <h1>Django</h1>
-    <p class="lead">Django is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://www.djangoproject.com/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-</div>
+<div class="custom-container">
+    <div class="container-fluid">
+        <div class="spacer-25"></div>
+        <h2><code>reaper</code> Run Results</h2>
+        <div class="spacer-25"></div>
+        <div class="alert alert-info" role="alert"><code>reaper</code> has reaped <strong>{{ projects|intcomma }}</strong> engineered software projects from <strong>2,247,526</strong> repositories.</div>
+        <div class="pull-right">
+            <nav>
+              <ul class="pager">
+                <li class="{% if not ppage %} disabled{% endif %}"><a href="{% if ppage %}?page={{ ppage }}{% else %}#{% endif %}">Previous</a></li>
+                <li class="{% if not npage %} disabled{% endif %}"><a href="{% if npage %}?page={{ npage }}{% else %}#{% endif %}">Next</a></li>
+              </ul>
+            </nav>
+        </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            Django gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://www.djangobook.com/en/2.0/index.html">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>The Python Package Index is a repository of software for the Python programming language.</p>
-        <p><a class="btn btn-default" href="https://pypi.python.org/pypi">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Python Tools for Visual Studio</h2>
-        <p>
-            PTVS is a free, open source plugin that turns Visual Studio into a Python IDE 
-            with support for editing, browsing, IntelliSense, Azure remote debugging, 
-            profiling and more.
-        </p>
-        <p><a class="btn btn-default" href="http://pytools.codeplex.com">Learn more &raquo;</a></p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Repository</th>
+                    <th>Links <span class="glyphicon glyphicon-new-window"></span></th>
+                    <th>Language</th>
+                    <th>Score</th>
+                    <th>Architecture</th>
+                    <th>Community</th>
+                    <th>CI</th>
+                    <th>Documentation</th>
+                    <th>History</th>
+                    <th>License</th>
+                    <th>Management</th>
+                    <th>Unit Test</th>
+                    <th>State</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.owner }}/{{ result.name|truncatechars:25 }}</td>
+                    <td>
+                        <a target="_blank" href="https://api.github.com/repos/{{ result.owner }}/{{ result.name }}">API</a> | 
+                        <a target="_blank" href="https://github.com/{{ result.owner }}/{{ result.name }}">Web</a>
+                    </td>
+                    <td>{{ result.language }}</td>
+                    <td>{{ result.score }}</td>
+                    <td>{{ result.architecture }}</td>
+                    <td>{{ result.community }}</td>
+                    <td>{{ result.continuous_integration }}</td>
+                    <td>{{ result.documentation }}</td>
+                    <td>{{ result.history }}</td>
+                    <td>{{ result.license }}</td>
+                    <td>{{ result.management }}</td>
+                    <td>{{ result.unit_test }}</td>
+                    <td>{{ result.state }}</td>
+                    <td>{{ result.created_at|date:'Y-m-d H:i:s' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pull-right">
+            <nav>
+              <ul class="pager">
+                <li class="{% if not ppage %} disabled{% endif %}"><a href="{% if ppage %}?page={{ ppage }}{% else %}#{% endif %}">Previous</a></li>
+                <li class="{% if not npage %} disabled{% endif %}"><a href="{% if npage %}?page={{ npage }}{% else %}#{% endif %}">Next</a></li>
+              </ul>
+            </nav>
+        </div>
     </div>
 </div>
 

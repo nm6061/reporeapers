@@ -30,12 +30,12 @@ DATABASES = {
 }
 
 LOGIN_URL = '/login'
-TIME_ZONE = 'America/New York'
+TIME_ZONE = 'America/New_York'
+USE_TZ = False
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
-USE_TZ = True
 MEDIA_ROOT = ''
 MEDIA_URL = ''
 STATIC_ROOT = path.join(PROJECT_ROOT, 'static').replace('\\', '/')
@@ -48,7 +48,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 SECRET_KEY = 'n(bd1f1c%e8=_xad02x5qtfn%wgwpi492e$8_erx+d)!tpeoim'
 TEMPLATE_LOADERS = (
@@ -59,7 +58,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 ROOT_URLCONF = 'DjangoWebProject.urls'
@@ -77,5 +75,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'app',
 )
