@@ -12,8 +12,8 @@ from app.models import ReaperResult
 
 def home(request):
     """Renders the home page."""
-    results = ReaperResult.objects.all()
-    paginator = Paginator(results.order_by('-created_at'), 100)
+    resultset= ReaperResult.objects.all()
+    paginator = Paginator(resultset.order_by('-created_at'), 100)
 
     page = request.GET.get('page', 1)
     try:
@@ -38,6 +38,8 @@ def home(request):
                 'year': datetime.now().year,
                 'projects': ReaperResult.objects.filter(score__gte=60).count(),
                 'results': results,
+                'done': resultset.count(),
+                'left': (2247526 - resultset.count()),
                 'tpages': paginator.num_pages,
                 'ppage': ppage,
                 'npage': npage,

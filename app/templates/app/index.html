@@ -8,7 +8,9 @@
         <div class="spacer-25"></div>
         <h2><code>reaper</code> Run Results</h2>
         <div class="spacer-25"></div>
-        <div class="alert alert-info" role="alert"><code>reaper</code> has reaped <strong>{{ projects|intcomma }}</strong> engineered software projects from <strong>2,247,526</strong> repositories.</div>
+        <div class="alert alert-info" role="alert">
+        <code>reaper</code> has reaped <strong>{{ projects|intcomma }}</strong> engineered software projects from the <strong>{{ done|intcomma }}</strong> respositories analyzed so far. <strong>{{ left|intcomma}}</strong> repositories remain.
+        </div>
         <div class="pull-right">
             <nav>
               <ul class="pager">
