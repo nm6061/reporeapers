@@ -13,7 +13,7 @@ from app.models import ReaperResult
 def home(request):
     """Renders the home page."""
     resultset= ReaperResult.objects.all()
-    paginator = Paginator(resultset.order_by('-created_at'), 100)
+    paginator = Paginator(resultset.order_by('-created_at'), 50)
 
     page = request.GET.get('page', 1)
     try:
