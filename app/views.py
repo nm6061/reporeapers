@@ -1,10 +1,11 @@
 """
 Definition of views.
 """
+import csv
 
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.template import RequestContext
 
@@ -59,3 +60,32 @@ def contact(request):
             }
         )
     )
+
+def download(request, switch):
+    """Produces the CSV."""
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="{0}.csv"'.format(
+        switch
+    )
+    writer = csv.writer(response)
+
+    dataset = ReaperResult.objects
+    if 'projects' in switch:
+        dataset = dataset.filter(score__gte=60)
+    
+    # Header
+    writer.writerow([
+        'repository','language','score'
+        'architecture','community','continuousintegration',
+        'documentation','history','issues',
+        'license','unittesting','state'
+    ])
+    for item in dataset.all():
+        writer.writerow([
+            '{0}/{1}'.format(item.owner, item.name), item.language, item.score,
+            item.architecture, item.community, item.continuous_integration,
+            item.documentation, item.history, item.management, item.license,
+            item.state
+        ])
+
+    return response
