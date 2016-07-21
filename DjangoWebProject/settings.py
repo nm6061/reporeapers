@@ -21,11 +21,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(PROJECT_ROOT, 'db.sqlite3'),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'NAME': path.join(PROJECT_ROOT, 'db.sqlite3')
     }
 }
 
@@ -35,7 +31,8 @@ USE_TZ = False
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
 USE_I18N = True
-USE_L10N = True
+USE_L10N = False
+USE_THOUSAND_SEPARATOR = True
 MEDIA_ROOT = ''
 MEDIA_URL = ''
 STATIC_ROOT = path.join(PROJECT_ROOT, 'static').replace('\\', '/')
