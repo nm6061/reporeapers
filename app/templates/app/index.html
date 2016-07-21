@@ -9,13 +9,13 @@
         <h2><code>reaper</code> Run Results</h2>
         <div class="spacer-25"></div>
         <div class="alert alert-info" role="alert">
-        <code>reaper</code> has reaped <strong>{{ projects|intcomma }}</strong> engineered software projects from the <strong>{{ done|intcomma }}</strong> respositories analyzed so far. <strong>{{ left|intcomma}}</strong> repositories remain.
+            <code>reaper</code> has reaped <strong>{{ projects|intcomma }}</strong> engineered software projects from the <strong>{{ done|intcomma }}</strong> respositories analyzed so far.{% if left > 0 %} <strong>{{ left|intcomma}}</strong> repositories remain.{% endif %}
         </div>
         <div class="pull-right">
             <nav>
               <ul class="pager">
-                <li class="{% if not ppage %} disabled{% endif %}"><a href="{% if ppage %}?page={{ ppage }}{% else %}#{% endif %}">Previous</a></li>
-                <li class="{% if not npage %} disabled{% endif %}"><a href="{% if npage %}?page={{ npage }}{% else %}#{% endif %}">Next</a></li>
+                <li class="{% if not ppage %} disabled{% endif %}"><a href="/results/{% if ppage %}{{ ppage }}.html{% else %}#{% endif %}">Previous</a></li>
+                <li class="{% if not npage %} disabled{% endif %}"><a href="/results/{% if npage %}{{ npage }}.html{% else %}#{% endif %}">Next</a></li>
               </ul>
             </nav>
         </div>
@@ -36,13 +36,14 @@
                     <th>Management</th>
                     <th>Unit Test</th>
                     <th>State</th>
-                    <th>Created At</th>
+                    <th># Stars</th>
+                    <th>Timestamp</th>
                 </tr>
             </thead>
             <tbody>
                 {% for result in results %}
                 <tr>
-                    <td>{{ result.owner }}/{{ result.name|truncatechars:25 }}</td>
+                    <td>{{ result.owner|truncatechars:22 }}/{{ result.name|truncatechars:22 }}</td>
                     <td>
                         <a target="_blank" href="https://api.github.com/repos/{{ result.owner }}/{{ result.name }}">API</a> | 
                         <a target="_blank" href="https://github.com/{{ result.owner }}/{{ result.name }}">Web</a>
@@ -58,7 +59,8 @@
                     <td>{{ result.management }}</td>
                     <td>{{ result.unit_test }}</td>
                     <td>{{ result.state }}</td>
-                    <td>{{ result.created_at|date:'Y-m-d H:i:s' }}</td>
+                    <td>{{ result.stars }}</td>
+                    <td>{{ result.timestamp|date:'Y-m-d H:i:s' }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -66,8 +68,8 @@
         <div class="pull-right">
             <nav>
               <ul class="pager">
-                <li class="{% if not ppage %} disabled{% endif %}"><a href="{% if ppage %}?page={{ ppage }}{% else %}#{% endif %}">Previous</a></li>
-                <li class="{% if not npage %} disabled{% endif %}"><a href="{% if npage %}?page={{ npage }}{% else %}#{% endif %}">Next</a></li>
+                <li class="{% if not ppage %} disabled{% endif %}"><a href="/results/{% if ppage %}{{ ppage }}.html{% else %}#{% endif %}">Previous</a></li>
+                <li class="{% if not npage %} disabled{% endif %}"><a href="/results/{% if npage %}{{ npage }}.html{% else %}#{% endif %}">Next</a></li>
               </ul>
             </nav>
         </div>
