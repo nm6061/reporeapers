@@ -18,7 +18,7 @@ DATASETS = dict()
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option(
-            '-x', type='bool', action='store_true', dest='export',
+            '-x', action='store_true', dest='export',
             help='Export data from the data base to CSV files.'
         ),
         make_option(
