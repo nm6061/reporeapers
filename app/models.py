@@ -4,6 +4,7 @@ Definition of models.
 
 from django.db import models
 
+
 class ReaperResult(models.Model):
     owner = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
@@ -20,4 +21,5 @@ class ReaperResult(models.Model):
     management = models.DecimalField(null=True, **options)
     unit_test = models.DecimalField(null=True, **options)
     state = models.CharField(max_length=10, null=True)
-    created_at = models.DateTimeField()
+    stars = models.DecimalField(null=True, **options)
+    timestamp = models.DateTimeField()
