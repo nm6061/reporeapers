@@ -1,20 +1,54 @@
+import sys
+
 from django.core.management.base import BaseCommand
+from django.db import connection
 from optparse import make_option
 
 from app import database as db
 from app import utilities as utils
-from app.models import ReaperResult
 
-QUERY = '''
-    SELECT u.login, p.name, p.language,
-        rr.score, rr.architecture, rr.community, rr.continuous_integration,
-        rr.documentation, rr.history, rr.license, rr.management, rr.unit_test,
-        rr.state, rr.recorded_at
-    FROM projects p
-        JOIN reaper_results rr ON rr.project_id = p.id
-        JOIN users u ON u.id = p.owner_id
-    WHERE run_id <> 1;
+U_QUERY = '''
+    SELECT *
+    FROM users
+    WHERE id IN (
+        SELECT owner_id FROM projects WHERE id IN (
+            SELECT project_id FROM reaper_results WHERE id IN (9, 10)
+        )
+    );
 '''
+IU_QUERY = '''
+    INSERT INTO users VALUES ({0})
+'''
+
+P_QUERY = '''
+    SELECT *
+    FROM projects
+    WHERE id IN (SELECT project_id FROM reaper_results WHERE id IN (9, 10));
+'''
+IP_QUERY = '''
+    INSERT INTO projects VALUES ({0})
+'''
+
+RRU_QUERY = '''
+    SELECT *
+    FROM reaper_runs;
+'''
+IRRU_QUERY = '''
+    INSERT INTO reaper_runs VALUES ({0})
+'''
+
+RRE_QUERY = '''
+    SELECT *
+    FROM reaper_results WHERE id IN (9, 10);
+'''
+IRRE_QUERY = '''
+    INSERT INTO reaper_results VALUES ({0})
+'''
+
+TABLES = ['Users', 'Projects', 'Reaper Runs', 'Reaper Results']
+S_QUERIES = [U_QUERY, P_QUERY, RRU_QUERY, RRE_QUERY]
+I_QUERIES = [IU_QUERY, IP_QUERY, IRRU_QUERY, IRRE_QUERY]
+
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
@@ -34,28 +68,25 @@ class Command(BaseCommand):
         database = db.Database(configuration['options']['datasource'])
         try:
             database.connect()
+            cursor = connection.cursor()
 
-            results = list()
-            for item in database.get(QUERY):
-                result = ReaperResult()
+            for index in range(0, len(TABLES)):
+                table = TABLES[index]
+                sq = S_QUERIES[index]
+                iq = I_QUERIES[index]
 
-                result.owner = item[0]
-                result.name = item[1]
-                result.language = item[2]
-                result.score = item[3]
-                result.architecture = item[4]
-                result.community = item[5]
-                result.continuous_integration = item[6]
-                result.documentation = item[7]
-                result.history = item[8]
-                result.license = item[9]
-                result.management = item[10]
-                result.unit_test = item[11]
-                result.state = item[12]
-                result.created_at = item[13]
-
-                results.append(result)
-
-            ReaperResult.objects.bulk_create(results)
+                print(table)
+                results = database.get(sq)
+                for (idx, result) in enumerate(results):
+                    self._print_('{0}/{1}'.format(idx + 1, len(results)))
+                    cursor.execute(
+                        iq.format(','.join(['%s'] * len(result))), result
+                    )
+                print()
         finally:
             database.disconnect()
+
+    def _print_(self, message):
+        sys.stdout.write(message)
+        sys.stdout.write('\r')
+        sys.stdout.flush()
