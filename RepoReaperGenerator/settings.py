@@ -1,23 +1,12 @@
 """
-Django settings for DjangoWebProject project.
+Django settings for RepoReaperGenerator project.
 """
 
 from os import path
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-
-ALLOWED_HOSTS = (
-    'localhost',
-)
-
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
-
-MANAGERS = ADMINS
-
+ALLOWED_HOSTS = ('localhost',)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -25,23 +14,14 @@ DATABASES = {
     }
 }
 
-LOGIN_URL = '/login'
 TIME_ZONE = 'America/New_York'
 USE_TZ = False
 LANGUAGE_CODE = 'en-us'
-SITE_ID = 1
 USE_I18N = True
 USE_L10N = False
 USE_THOUSAND_SEPARATOR = True
-MEDIA_ROOT = ''
-MEDIA_URL = ''
 STATIC_ROOT = path.join(PROJECT_ROOT, 'static').replace('\\', '/')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
