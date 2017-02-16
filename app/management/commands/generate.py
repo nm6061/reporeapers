@@ -1,8 +1,10 @@
+import csv
 import math
 import os
 import subprocess
 
 from datetime import datetime
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.template import Context
 from django.template.loader import render_to_string
@@ -13,6 +15,7 @@ from app import database as db
 from app import utilities as utils
 from app.models import ReaperResult
 
+IGNORES_FILEPATH = os.path.join(settings.PROJECT_ROOT, 'app/data/ignores.csv')
 PAGE_SIZE = 500
 DATASET = None
 
@@ -105,8 +108,18 @@ class Command(BaseCommand):
 
         subprocess.call(args=['gzip', path])
 
+    def _get_ignores_(self):
+        ignores = None
+        with open(IGNORES_FILEPATH) as file_:
+            reader = csv.reader(file_)
+            ignores = set([row[0] for row in reader])
+        return ignores
+
     def _get_dataset_(self, settings):
         _debug_('Populating dataset')
+
+        ignores = self._get_ignores_()
+        _debug_('{} repositories will be ignored'.format(len(ignores)))
 
         dataset = list()
 
@@ -132,6 +145,8 @@ class Command(BaseCommand):
 
                 item.owner = row[0]
                 item.name = row[1]
+                if '{}/{}'.format(item.owner, item.name) in ignores:
+                    continue
                 item.language = row[2]
                 item.score = row[3]
                 item.architecture = row[4]
