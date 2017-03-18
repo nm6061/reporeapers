@@ -19,6 +19,7 @@ class ReaperResult(models.Model):
     history = models.DecimalField(null=True, **options)
     license = models.NullBooleanField(null=True)
     management = models.DecimalField(null=True, **options)
+    repository_size = models.DecimalField(null=True, **options)
     unit_test = models.DecimalField(null=True, **options)
     state = models.CharField(max_length=10, null=True)
     stars = models.DecimalField(null=True, **options)

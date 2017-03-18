@@ -1,3 +1,3 @@
-repository,language,architecture,community,continuous_integration,documentation,history,license,management,unit_test,state,stars
-{% for result in results %}{{ result.owner }}/{{ result.name}},{{ result.language }},{{ result.architecture }},{{ result.community }},{{ result.continuous_integration }},{{ result.documentation }},{{ result.history }},{{ result.license }},{{ result.management }},{{ result.unit_test }},{{ result.state }},{{ result.stars }}
+repository,language,architecture,community,continuous_integration,documentation,history,license,management,size,unit_test,state,stars
+{% for result in results %}{{ result.owner }}/{{ result.name}},{{ result.language }},{{ result.architecture }},{{ result.community }},{{ result.continuous_integration }},{{ result.documentation }},{{ result.history }},{{ result.license }},{{ result.management }},{{ result.repository_size }},{{ result.unit_test }},{{ result.state }},{{ result.stars }}
 {% endfor %}

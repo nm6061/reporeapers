@@ -129,10 +129,19 @@ class Command(BaseCommand):
                 rr.score, rr.architecture, rr.community,
                 rr.continuous_integration, rr.documentation, rr.history,
                 rr.license, rr.management, rr.unit_test, rr.state, rr.stars,
-                rr.timestamp
+                rr.timestamp, rr.repository_size
             FROM projects p
                 JOIN reaper_results rr ON rr.project_id = p.id
                 JOIN users u ON u.id = p.owner_id
+            WHERE rr.architecture IS NOT NULL AND
+                rr.community IS NOT NULL AND
+                rr.continuous_integration IS NOT NULL AND
+                rr.documentation IS NOT NULL AND
+                rr.history IS NOT NULL AND
+                rr.license IS NOT NULL AND
+                rr.management IS NOT NULL AND
+                rr.repository_size IS NOT NULL AND
+                rr.unit_test IS NOT NULL
             ORDER BY timestamp DESC
         '''
 
@@ -160,6 +169,7 @@ class Command(BaseCommand):
                 item.state = row[12]
                 item.stars = row[13]
                 item.timestamp = row[14]
+                item.repository_size = row[15]
 
                 dataset.append(item)
         finally:
@@ -187,6 +197,7 @@ def _generate(template_name, curr_page, context, output):
     context['ppage'] = prev_page
     context['cpage'] = curr_page
     context['npage'] = next_page
+    context['year'] = datetime.now().year
 
     page_name = '{0}.html'.format(curr_page)
     render_to_file(
